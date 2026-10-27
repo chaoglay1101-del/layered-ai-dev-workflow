@@ -1,0 +1,96 @@
+# Task card: L1 (the lead agent session) turns a to-do item into a card. It may start only after the label agent:ready is added.
+# Fields follow docs/architecture.md. "Files and docs to change" is the file lock (see .agents/ledger.md);
+# scripts/lock-check.mjs reads that heading, so keep the label text in sync with workflow.config.json (cardHeadings.files).
+name: Task card
+description: A piece of work handed to L2 (executor agent) or L3 (cheap model)
+title: "B-00 "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Start the title with the to-do number (for example "B-02 add preview image"). When the fields are filled in and the
+        file lock has no conflict, L1 adds the label `agent:ready`.
+        Do not write customer personal data (names, emails, phone numbers, original requests, material), prices or secrets
+        into a card; they never go to an external model.
+  - type: input
+    id: todo
+    attributes:
+      label: To-do number
+      description: The number in your to-do list
+      placeholder: B-02
+    validations:
+      required: true
+  - type: textarea
+    id: goal
+    attributes:
+      label: Goal
+      description: One sentence - what is different when this is done
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Background links
+      description: Spec sections, related PRs, to-do numbers; no long conversations
+    validations:
+      required: true
+  - type: dropdown
+    id: level
+    attributes:
+      label: Execution level
+      description: Pick by the model routing in docs/architecture.md
+      options:
+        - L2 executor (feature work, bug fix; opens a PR)
+        - L2 read-only (explore code, read CI logs; returns a summary)
+        - L3 cheap model (copy, translation, summaries)
+        - L3 cheap model, patch mode (routine small code change: produces a patch that L2 applies)
+        - L1 (the lead session does it itself; no automatic run)
+    validations:
+      required: true
+  - type: textarea
+    id: files
+    attributes:
+      label: Files and docs to change
+      description: One path or document name per line. This is the file lock - only these may change
+      placeholder: |
+        src/pages/index.html
+        src/i18n/en.json
+    validations:
+      required: true
+  - type: textarea
+    id: numbers
+    attributes:
+      label: Pre-assigned numbers
+      description: Assigned by L1 from .agents/ledger.md; "none" if there are none
+      placeholder: |
+        Spec version 1.29 (spec-sync.json)
+        Migration 0010
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: Conditions that can be checked
+      placeholder: |
+        - npm test passes
+        - The English home page title reads ...
+    validations:
+      required: true
+  - type: textarea
+    id: dont
+    attributes:
+      label: Do not
+      placeholder: |
+        - Do not edit the spec document, do not merge, do not push to main
+        - Do not touch migrations/
+    validations:
+      required: true
+  - type: input
+    id: limits
+    attributes:
+      label: Limits
+      description: max-turns and expected cost (default for L2: max-turns 25, 30 minutes)
+      placeholder: max-turns 25, US$0.50
+    validations:
+      required: true

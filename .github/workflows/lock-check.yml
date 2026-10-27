@@ -1,0 +1,36 @@
+# File lock and number check for pull requests.
+# With `Closes #N` in the PR description, changing a file outside the "Files and docs to change" field of card #N fails.
+# Overlap with other open cards only warns (job summary). Ledger number collisions fail.
+# Uses the scripts from the base branch only and never runs code from the PR; the PR head's ledger is read through the API.
+# In a repo without .agents/ledger.md the number check is skipped.
+name: Lock check
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, edited]
+
+permissions:
+  contents: read
+  pull-requests: read
+  issues: read
+
+jobs:
+  lock-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check file locks and numbers
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          # The PR that adds the script has nothing to run against on its base branch: skip
+          if [ ! -f scripts/lock-check.mjs ]; then echo "No scripts/lock-check.mjs on the base branch, skipping."; exit 0; fi
+          node scripts/lock-check.mjs
