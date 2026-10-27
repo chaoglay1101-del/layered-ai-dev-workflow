@@ -1,0 +1,45 @@
+# After a PR merges to main: move assigned numbers to "Currently used" in the ledger, remove the card's file-lock row,
+# and (optionally, config needsOwnerIssue) tick "merge #PR" items in the pinned "needs owner" issue.
+# The logic is in scripts/merge-wrapup.mjs. PRs from bot/ branches (the wrap-up PR itself) are skipped.
+# With no .agents/ledger.md on main the ledger step is a no-op, so this is safe in any repo.
+#
+# Token: GITHUB_TOKEN works, but PRs it opens do not trigger other workflows (no CI on the wrap-up PR).
+# For that, add a personal access token as the repository secret AGENT_PAT; the line below uses it when present.
+# A failure only prints "Wrap up manually" and never fails the workflow.
+name: Merge wrapup
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  wrapup:
+    if: >-
+      github.event.pull_request.merged == true
+      && github.event.pull_request.base.ref == 'main'
+      && !startsWith(github.event.pull_request.head.ref, 'bot/')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Wrap up the merged PR
+        env:
+          GITHUB_TOKEN: ${{ secrets.AGENT_PAT || secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+          PR_HEAD_REF: ${{ github.event.pull_request.head.ref }}
+        run: |
+          if [ ! -f scripts/merge-wrapup.mjs ]; then echo "No scripts/merge-wrapup.mjs, skipping."; exit 0; fi
+          node scripts/merge-wrapup.mjs

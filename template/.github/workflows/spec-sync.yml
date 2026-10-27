@@ -1,0 +1,31 @@
+# Example: require a spec update when a PR changes code. Copy next to ci.yml in your own repo.
+# The PR description needs one line:
+#   Spec: 1.48 <what changed>      or      Spec: not affected: <reason>
+# (and "SEO spec: ..." when files listed in specSync.seoFiles change). Which files count as code is set in workflow.config.json.
+# The PR description is passed through an environment variable, never interpolated into the shell command.
+name: Spec sync
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, edited]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  spec-sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check that the spec was synced
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: node scripts/check-spec-sync.mjs ${{ github.event_name == 'pull_request' && format('origin/{0}', github.base_ref) || 'HEAD^1' }}

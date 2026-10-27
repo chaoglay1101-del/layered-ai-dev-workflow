@@ -1,0 +1,6 @@
+{
+  "spec_version": "1.0",
+  "last_change": "Spec not affected: initial file",
+  "spec_doc": "<SPEC_DOC link>",
+  "how_to_update": "A PR that changes code: update the spec document, set spec_version to the document's new version (greater than before) and write one sentence in last_change. When the spec is not affected, keep spec_version and start last_change with 'Spec not affected:' followed by the reason. CI checks this (scripts/check-spec-sync.mjs)."
+}

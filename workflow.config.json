@@ -1,0 +1,48 @@
+{
+  "_comment_1": "Settings read by the scripts in scripts/. Every key is optional; the values below are the defaults.",
+  "_comment_2": "Keys starting with an underscore are ignored. Regular expressions are strings, so backslashes are doubled.",
+  "_comment_3": "GITHUB_REPOSITORY (set by GitHub Actions) decides which repo the scripts talk to; set \"repo\" only to override it.",
+
+  "repo": null,
+  "_comment_tz": "IANA time zone used for the dates merge-wrapup writes into the ledger.",
+  "timezone": "UTC",
+
+  "ledgerPath": ".agents/ledger.md",
+  "ledgerHeadings": {
+    "numbers": "Numbers",
+    "sessions": "Session numbers",
+    "locks": "Active cards and file locks"
+  },
+  "ledgerColumns": { "used": "Currently used", "assigned": "Assigned" },
+
+  "_comment_cards": "Heading in the task card (issue form) that lists the files the card may change. This is the file lock.",
+  "cardHeadings": { "files": "Files and docs to change" },
+
+  "labels": {
+    "_comment": "Open issues with any of these labels count as holding a file lock.",
+    "lock": ["agent:ready", "agent:running"],
+    "autoMerge": "auto-merge",
+    "statusReport": "status-check"
+  },
+
+  "_comment_bot": "PRs from branches with this prefix are bot PRs: merge-wrapup skips them so it does not trigger itself.",
+  "botBranchPrefix": "bot/",
+
+  "_comment_owner": "Optional issue number of a pinned 'needs owner' checklist. merge-wrapup ticks items that say 'merge #PR'. null = off.",
+  "needsOwnerIssue": null,
+
+  "_comment_ignored": "Paths that never count as outside a file lock (for example files that tools write automatically).",
+  "ignoredPaths": [".agents/usage/"],
+
+  "specSync": {
+    "specFile": "spec-sync.json",
+    "_comment_notCode": "Files matching these patterns do not need a spec update.",
+    "notCode": [
+      "^README\\.md$", "^AGENTS\\.md$", "^CLAUDE\\.md$", "^TODO\\.md$", "^docs/", "^tests/",
+      "^\\.claude/", "^spec-sync\\.json$", "^\\.agents/ledger\\.md$", "^\\.agents/usage/",
+      "^\\.github/ISSUE_TEMPLATE/", "^\\.github/pull_request_template\\.md$"
+    ],
+    "_comment_seo": "Optional second spec (for example an SEO spec): files that need it. Empty = off.",
+    "seoFiles": []
+  }
+}
