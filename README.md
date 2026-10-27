@@ -3,6 +3,8 @@
 A way to run several AI coding-agent sessions on one repository at the same time, with task cards, file locks, a number
 ledger and handoff notes, plus the small Node scripts that enforce the rules in CI.
 
+[繁體中文](README.zh-TW.md)
+
 ## The problem
 
 When more than one agent session works on a repo in parallel, three things go wrong:
@@ -72,6 +74,7 @@ Details and caveats are in [docs/case-study.md](docs/case-study.md).
 
 ```
 README.md                 this page
+README.zh-TW.md           Traditional Chinese version
 docs/architecture.md      layers, task card lifecycle, handoff, ledger, data boundary, cost
 docs/case-study.md        the project this came from: problem, approach, results
 docs/stack.md             appendix: the technology stack of that project (text only)

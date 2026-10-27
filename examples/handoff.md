@@ -8,14 +8,14 @@ Two notes in the style used on the real cards (times and counts are illustrative
 ```
 ## Handoff note (10-27 02:10, Actions run <link>)
 **Done**:
-- Added `scripts/lock-check.mjs`, `tests/lock-check.test.js` and `.github/workflows/lock-check.yml` (PR #204, branch `agent/197`, 15 tests).
+- Added `scripts/lock-check.mjs`, `tests/lock-check.test.js` and `.github/workflows/lock-check.yml` (PR #208, branch `agent/197`, 15 tests).
 **Current state**:
 - PR open, not merged. The tests pass locally. The PR was opened with the default token, so CI has not run on it yet.
 **Next**:
 1. L1 closes and reopens the PR so CI runs, then reviews it.
 2. Before merging, check that the PR description says whether the spec is affected.
 **Needs a person**:
-- Merge PR #204 after CI is green.
+- Merge PR #208 after CI is green.
 **Practices worth capturing**:
 - none
 ```
