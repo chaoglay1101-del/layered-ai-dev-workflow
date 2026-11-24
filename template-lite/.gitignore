@@ -1,0 +1,13 @@
+# Originals and personal data never enter git
+private/
+
+# Secrets
+.env
+.env.*
+*.key
+
+# Scans and photos (may contain personal data); remove these lines if the project needs images in git
+*.jpg
+*.jpeg
+*.png
+*.heic

@@ -5,6 +5,23 @@ ledger and handoff notes, plus the small Node scripts that enforce the rules in 
 
 [繁體中文](README.zh-TW.md)
 
+## New in v2 (2026-11): several projects, not one repository
+
+v1 (below) ran parallel agent sessions on one code repository. A month later the same method had to cover several
+unrelated projects at once, including projects that are only documents and decisions. What changed
+([docs/v2-multi-project.md](docs/v2-multi-project.md)):
+
+- **One brain, two reviewers from different vendors.** One model judges and writes; two models from other vendors review
+  every pull request and only give opinions; the owner alone merges.
+- **Decisions debated with evidence.** Numbered, graded evidence for and against, claims without evidence marked, and an
+  anchoring warning ([docs/evidence-debate.md](docs/evidence-debate.md)).
+- **A local scout and executor with guardrails**: allow-listed commands, file locks, at most two automatic repairs, quota
+  gates, and one short report for the owner.
+- **Two project levels and a closing checklist.** Every project starts as "rules only" and is automated only when it is
+  stable ([docs/project-sop.md](docs/project-sop.md), templates in [`template-lite/`](template-lite/)).
+- **Stale-work hygiene**: work finished in conversation closes the related cards and PRs; dead branches are not retried.
+- **What did not work** is written down too: building faster than measuring, and a system that creates its own chores.
+
 ## The problem
 
 When more than one agent session works on a repo in parallel, three things go wrong:
@@ -53,6 +70,10 @@ Anything a program can check becomes CI, and the prose rule is deleted.
 5. Run `npm test` (Node 20 or newer, no packages to install). Push a branch and open a PR with `Closes #<card>`:
    `lock-check` will compare the changed files with the card's lock.
 
+For a project that is not a code repository (planning, research, documents), start from `template-lite/` instead and
+follow [docs/project-sop.md](docs/project-sop.md): copy `AGENTS.md`, `CLAUDE.md`, `SPEC.md` and `.gitignore`, answer the
+five questions, and add `docs/debates/` when the first important decision comes up.
+
 ## Case numbers
 
 As of 2026-10-27, for 2026-10-24 to 2026-10-27. Source: GitHub statistics of the private repo of the project this came from.
@@ -78,8 +99,13 @@ README.zh-TW.md           Traditional Chinese version
 docs/architecture.md      layers, task card lifecycle, handoff, ledger, data boundary, cost
 docs/case-study.md        the project this came from: problem, approach, results
 docs/stack.md             appendix: the technology stack of that project (text only)
+docs/v2-multi-project.md  v2: what changed for several projects, and what did not work
+docs/evidence-debate.md   v2: debating decisions between models with an evidence pack
+docs/project-sop.md       v2: open a project, automate it, pause or retire it
 template/                 copy into your repo: CLAUDE.md, AGENTS.md, skills, sub-agent,
                           issue template, ledger, spec-sync example
+template-lite/            v2: rules-only project: AGENTS.md, CLAUDE.md, SPEC.md, .gitignore,
+                          debate templates
 examples/                 a de-identified task card, handoff notes, a ledger excerpt
 scripts/                  lock-check, check-spec-sync, merge-wrapup, status-check (+ scripts/lib)
 tests/                    node:test tests for the scripts (fake data, no network)
