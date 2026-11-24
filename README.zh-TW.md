@@ -2,6 +2,17 @@
 
 [English](README.md)
 
+## v2 新增（2026-11）：從一個 repo 到多個專案
+
+v1（下面的內容）是讓多個 agent 工作階段在同一個程式 repo 平行工作。一個月後，同一套方法要同時管好幾個彼此無關的專案，其中有些只有文件和決策、沒有程式。改了什麼（[docs/v2-multi-project.md](docs/v2-multi-project.md)）：
+
+- **一個大腦，兩個不同公司的審查者。** 一個模型負責判斷和寫卡；另外兩家公司的模型審查每個 PR、只提意見；合併只由本人做。
+- **重要決定先附證據討論。** 證據編號、分等級、正反都找，沒有證據的論點要標出來，並提醒錨定風險（[docs/evidence-debate.md](docs/evidence-debate.md)）。
+- **本機的偵察和執行器，加上護欄**：指令白名單、檔案鎖、自動修復最多兩次、額度門檻，回來時只看一份簡短彙報。
+- **專案分兩級，也有收攤清單。** 每個專案都從「只有規則」開始，穩定了才加自動化（[docs/project-sop.md](docs/project-sop.md)，範本在 [`template-lite/`](template-lite/)）。
+- **清掉過時的工作**：在對話裡做完的事，會一併結掉相關的卡和 PR；基準分支已經不在的卡不再重試。
+- **沒成功的也寫下來**：改得比量得快、系統自己製造雜事。
+
 讓多個 AI coding agent 工作階段同時在同一個 repository 工作的方法：任務卡、檔案鎖、編號資源表（ledger）和交接紀錄，加上幾支在 CI 裡執行這些規則的小型 Node 腳本。
 
 ## 要解決的問題
@@ -43,6 +54,8 @@ agent 每一輪都要遵守的規則寫得很短（`template/CLAUDE.md`）。只
 4. 用「Task card」issue 模板開第一張任務卡，填好「Files and docs to change」（也就是檔案鎖），在 `.agents/ledger.md` 加一列，再加上 label `agent:ready`。
 5. 執行 `npm test`（Node 20 以上，不用安裝套件）。推一個分支、開 PR，說明裡寫 `Closes #<卡號>`：`lock-check` 會把改到的檔案和任務卡的檔案鎖比對。
 
+不是程式 repo 的專案（規劃、研究、文件），改從 `template-lite/` 開始，照 [docs/project-sop.md](docs/project-sop.md) 做：複製 `AGENTS.md`、`CLAUDE.md`、`SPEC.md`、`.gitignore`，回答五個問題；遇到第一個重要決定時再加 `docs/debates/`。
+
 ## 案例數字
 
 截至 2026-10-27，期間為 2026-10-24 至 2026-10-27。來源：來源專案私人 repo 的 GitHub 統計。細節和注意事項見 [docs/case-study.md](docs/case-study.md)。
@@ -67,8 +80,13 @@ README.zh-TW.md           這一頁
 docs/architecture.md      分層、任務卡生命週期、交接、ledger、資料界線、成本
 docs/case-study.md        來源專案：問題、做法、成果
 docs/stack.md             附錄：來源專案的技術棧（只有文字）
+docs/v2-multi-project.md  v2：管多個專案改了什麼、哪些沒成功
+docs/evidence-debate.md   v2：模型之間附證據包討論決定
+docs/project-sop.md       v2：開專案、加自動化、擱置或替除
 template/                 複製到你的 repo：CLAUDE.md、AGENTS.md、技能、子代理、
                           issue 模板、ledger、spec-sync 範例
+template-lite/            v2：只有規則的專案：AGENTS.md、CLAUDE.md、SPEC.md、.gitignore、
+                          討論範本
 examples/                 去識別化的任務卡、交接紀錄、ledger 節錄
 scripts/                  lock-check、check-spec-sync、merge-wrapup、status-check（＋scripts/lib）
 tests/                    腳本的 node:test 測試（假資料、不連網）
