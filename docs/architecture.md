@@ -98,7 +98,9 @@ a script first. Task cards must not contain them either. Secrets live in the pla
 - Write multi-step operations as one script. Put independent tool calls in one turn.
 - Subscribe only to PRs that need watching; check docs-only PRs together on a timer.
 - Keep the always-read rule file short. In the source project, moving L1-only rules into skills shrank `CLAUDE.md` by
-  about 39%, and L2 runs stopped re-reading them every turn.
+  about 39%, and L2 runs stopped re-reading them every turn. That is a size figure; the effect on results was not
+  measured (see [case-study.md](case-study.md)). To check a rule or skill, run the same few tasks with and without it
+  and compare.
 
 ## Rules become CI
 

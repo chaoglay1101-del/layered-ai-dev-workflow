@@ -67,7 +67,7 @@ Details and caveats are in [docs/case-study.md](docs/case-study.md).
 | GitHub Actions workflows / `.mjs` scripts / test files | 17 / 20 / 34 |
 | L1 sessions chained by ledger numbers and handoff notes | S-001 to S-016 |
 | L2/L3 calls in the usage log / cheap-model calls and their cost | 30 / 10 calls, about US$0.03 |
-| `CLAUDE.md` size after moving L1-only rules into skills | about 39% smaller |
+| `CLAUDE.md` size after moving L1-only rules into skills | about 39% smaller (file size only; the effect on results was not measured) |
 | Spec versions | main spec v1.61, collaboration spec v1.16 |
 
 ## Repository layout

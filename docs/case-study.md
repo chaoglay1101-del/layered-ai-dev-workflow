@@ -48,6 +48,12 @@ Notes on reading these numbers:
 - The usage log counts the logged L2/L3 calls only (30), including the 10 cheap-model calls.
 - The spec versions are those of two documents kept outside the repo; a version bump means that document changed.
 - Four days is a short window. The figures show how the setup behaved in a burst of work, not long-run productivity.
+- The 39% is a file-size figure. Whether the shorter file changed task success, cost, or how reliably agents loaded the
+  skills was not measured. A study of repository context files found they do not generally raise task success and add
+  over 20% to inference cost ([Gloaguen et al., arXiv 2602.11988](https://arxiv.org/abs/2602.11988), preprint), and
+  Anthropic's [skill authoring guide](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices)
+  recommends measuring a baseline without the skill before writing one. This repository does not include such an
+  evaluation yet.
 
 ## What carried over to this repository
 
